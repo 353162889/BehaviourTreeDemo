@@ -6,26 +6,29 @@ namespace BTCore
 {
     public enum BTResult
     {
+        Success,
         Running,
-        Finish
+        Failure,
     }
     abstract public class BTNode {
 
-        private BTPreCondition _condition;
-        public BTNode() : this(null) { }
-        public BTNode(BTPreCondition preCondition = null)
-        {
-            _condition = preCondition;
+        protected string m_sNodeName;
+        public string nodeName {
+            get { return m_sNodeName; }
+        }
+        public BTNode(string name) {
+            m_sNodeName = name;
+            if(string.IsNullOrEmpty(m_sNodeName))
+            {
+                m_sNodeName = GetType().ToString();
+            }
         }
 
-        public bool Evaluate(BTBlackBoard blackBoard)
-        {
-            return (_condition == null || _condition.ExtraEvaluate(blackBoard)) && DoEvaluate(blackBoard);
+        public BTNode():this(null) {
+          
         }
 
-        public virtual bool DoEvaluate(BTBlackBoard bloackBoard){   return true;    }
-
-        public virtual BTResult OnTick(BTBlackBoard blackBoard){    return BTResult.Finish; }
+        public virtual BTResult OnTick(BTBlackBoard blackBoard){    return BTResult.Success; }
 
         public virtual void Clear() { }
 

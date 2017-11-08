@@ -5,7 +5,28 @@ using System.Text;
 
 namespace BTCore
 {
-    public class BTComposite
+    public class BTComposite : BTNode
     {
+        protected List<BTNode> m_lstChild;
+
+        public BTComposite(string name) : base(name)
+        {
+            m_lstChild = new List<BTNode>();
+        }
+
+        //可重写
+        public virtual void AddChild(BTNode child)
+        {
+            m_lstChild.Add(child);
+        }
+
+        public override void Clear()
+        {
+            int count = m_lstChild.Count;
+            for (int i = 0; i < count; i++)
+            {
+                m_lstChild[i].Clear();
+            }
+        }
     }
 }
